@@ -52,8 +52,7 @@ android {
             signingConfig signingConfigs.debug
 
             // Add below 3 lines for proguard
-            minifyEnabled true
-            useProguard true
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
