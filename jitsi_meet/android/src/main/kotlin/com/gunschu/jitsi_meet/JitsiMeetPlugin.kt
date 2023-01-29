@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import androidx.annotation.NonNull
+import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -13,7 +14,6 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
-import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import java.net.URL
@@ -162,7 +162,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
         // Build options object for joining the conference. The SDK will merge the default
         // one we set earlier and this one when joining.
-        JitsiMeetPluginActivity.launchActivity(activity, options)
+        JitsiMeetPluginActivity.launchActivity(activity!!, options)
         //PluginActivity.getInstance().launchActivity(activity, options2);
         //JitsiMeetActivity.launch(activity, "https://meet.jit.si")
         //JitsiMeetActivity.launch(activity, options2)
@@ -179,7 +179,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
      * ActivityAware interface implementations
      */
     override fun onDetachedFromActivity() {
-        this.activity = null
+       // this.activity  = null
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -187,7 +187,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        this.activity = binding.activity
+        this.activity =  binding.activity as FlutterActivity
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

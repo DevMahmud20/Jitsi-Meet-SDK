@@ -23,13 +23,13 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 class JitsiMeetPluginActivity : JitsiMeetActivity() {
     companion object {
         @JvmStatic
-        fun launchActivity(context: Activity?,
+        fun launchActivity(context: Activity,
                            options: JitsiMeetConferenceOptions) {
             var intent = Intent(context, JitsiMeetPluginActivity::class.java).apply {
                 action = "org.jitsi.meet.CONFERENCE"
                 putExtra("JitsiMeetConferenceOptions", options)
             }
-            context?.startActivity(intent)
+            context.applicationContext.startActivity(intent)
         }
     }
 
