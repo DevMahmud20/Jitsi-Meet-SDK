@@ -13,6 +13,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import java.net.URL
@@ -31,6 +32,8 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
     private var activity: Activity? = null
 
+    private lateinit var flutterPluginBinding : FlutterPlugin.FlutterPluginBinding;
+
     constructor(activity: Activity?) : this() {
         this.activity = activity
     }
@@ -39,11 +42,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
      * FlutterPlugin interface implementations
      */
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, JITSI_METHOD_CHANNEL)
-        channel.setMethodCallHandler(this)
-
-        eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, JITSI_EVENT_CHANNEL)
-        eventChannel.setStreamHandler(JitsiMeetEventStreamHandler.instance)
+        this.flutterPluginBinding = flutterPluginBinding;
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
@@ -154,7 +153,17 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
         // Build with meeting options and feature flags
         val options = optionsBuilder.build()
 
+        // Build options object for joining the conference. The SDK will merge the default
+        // one we set earlier and this one when joining.
+        val options2 = JitsiMeetConferenceOptions.Builder()
+            .setRoom("Hello") // Settings for audio and video
+            //.setAudioMuted(true)
+            //.setVideoMuted(true)
+            .build()
         JitsiMeetPluginActivity.launchActivity(activity, options)
+        //PluginActivity.getInstance().launchActivity(activity, options2);
+        //JitsiMeetActivity.launch(activity, "https://meet.jit.si")
+        //JitsiMeetActivity.launch(activity, options2)
         result.success("Successfully joined room: $room")
     }
 
@@ -177,6 +186,11 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         this.activity = binding.activity
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, JITSI_METHOD_CHANNEL)
+        channel.setMethodCallHandler(this)
+
+        eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, JITSI_EVENT_CHANNEL)
+        eventChannel.setStreamHandler(JitsiMeetEventStreamHandler.instance)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

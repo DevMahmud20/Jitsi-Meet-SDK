@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_MEETING_CLOSE
 import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_PLUGIN_TAG
 import org.jitsi.meet.sdk.JitsiMeetActivity
@@ -69,24 +70,24 @@ class JitsiMeetPluginActivity : JitsiMeetActivity() {
         registerReceiver(myReceiver, IntentFilter(JITSI_MEETING_CLOSE))
     }
 
-    override fun onConferenceWillJoin(data: HashMap<String, Any>) {
-        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceWillJoin: %s", data))
-        JitsiMeetEventStreamHandler.instance.onConferenceWillJoin(data)
-        super.onConferenceWillJoin(data)
-    }
-
-    override fun onConferenceJoined(data: HashMap<String, Any>) {
-        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceJoined: %s", data))
-        JitsiMeetEventStreamHandler.instance.onConferenceJoined(data)
-        super.onConferenceJoined(data)
-    }
-
-    override fun onConferenceTerminated(data: HashMap<String, Any>) {
-
-        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceTerminated: %s", data))
-        JitsiMeetEventStreamHandler.instance.onConferenceTerminated(data)
-        super.onConferenceTerminated(data)
-    }
+//    override fun onConferenceWillJoin(data: HashMap<String, Any>) {
+//        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceWillJoin: %s", data))
+//        JitsiMeetEventStreamHandler.instance.onConferenceWillJoin(data)
+//        super.onConferenceWillJoin(data)
+//    }
+//
+//    override fun onConferenceJoined(data: HashMap<String, Any>) {
+//        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceJoined: %s", data))
+//        JitsiMeetEventStreamHandler.instance.onConferenceJoined(data)
+//        super.onConferenceJoined(data)
+//    }
+//
+//    override fun onConferenceTerminated(data: HashMap<String, Any>) {
+//
+//        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceTerminated: %s", data))
+//        JitsiMeetEventStreamHandler.instance.onConferenceTerminated(data)
+//        super.onConferenceTerminated(data)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
