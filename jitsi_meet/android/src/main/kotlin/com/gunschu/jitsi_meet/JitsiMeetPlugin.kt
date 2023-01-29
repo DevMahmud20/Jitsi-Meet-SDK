@@ -32,7 +32,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
     private var activity: Activity? = null
 
-    private lateinit var flutterPluginBinding : FlutterPlugin.FlutterPluginBinding;
+    private lateinit var flutterPluginBinding: FlutterPlugin.FlutterPluginBinding;
 
     constructor(activity: Activity?) : this() {
         this.activity = activity
@@ -42,6 +42,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
      * FlutterPlugin interface implementations
      */
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        this.flutterPluginBinding = flutterPluginBinding;
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, JITSI_METHOD_CHANNEL)
         channel.setMethodCallHandler(this)
 
@@ -105,9 +106,11 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     private fun joinMeeting(call: MethodCall, result: Result) {
         val room = call.argument<String>("room")
         if (room.isNullOrBlank()) {
-            result.error("400",
-                    "room can not be null or empty",
-                    "room can not be null or empty")
+            result.error(
+                "400",
+                "room can not be null or empty",
+                "room can not be null or empty"
+            )
             return
         }
 
@@ -131,14 +134,14 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
         // Set meeting options
         optionsBuilder
-                .setServerURL(serverURL)
-                .setRoom(room)
-                .setSubject(call.argument("subject"))
-                .setToken(call.argument("token"))
-                .setAudioMuted(call.argument("audioMuted") ?: false)
-                .setAudioOnly(call.argument("audioOnly") ?: false)
-                .setVideoMuted(call.argument("videoMuted") ?: false)
-                .setUserInfo(userInfo)
+            .setServerURL(serverURL)
+            .setRoom(room)
+            .setSubject(call.argument("subject"))
+            .setToken(call.argument("token"))
+            .setAudioMuted(call.argument("audioMuted") ?: false)
+            .setAudioOnly(call.argument("audioOnly") ?: false)
+            .setVideoMuted(call.argument("videoMuted") ?: false)
+            .setUserInfo(userInfo)
 
         // Add feature flags into options, reading given Map
         if (call.argument<HashMap<String, Any>?>("featureFlags") != null) {
@@ -159,12 +162,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
         // Build options object for joining the conference. The SDK will merge the default
         // one we set earlier and this one when joining.
-        val options2 = JitsiMeetConferenceOptions.Builder()
-            .setRoom("Hello") // Settings for audio and video
-            //.setAudioMuted(true)
-            //.setVideoMuted(true)
-            .build()
-        JitsiMeetPluginActivity.launchActivity(activity, options)
+        JitsiMeetPluginActivity.launchActivity(flutterPluginBinding.applicationContext, options)
         //PluginActivity.getInstance().launchActivity(activity, options2);
         //JitsiMeetActivity.launch(activity, "https://meet.jit.si")
         //JitsiMeetActivity.launch(activity, options2)
@@ -190,11 +188,9 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         this.activity = binding.activity
-          }
+    }
 
     override fun onDetachedFromActivityForConfigChanges() {
         onDetachedFromActivity()
     }
-
-
 }
