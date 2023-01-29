@@ -1,5 +1,6 @@
 package com.gunschu.jitsi_meet
 
+import android.app.Activity
 import android.app.KeyguardManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -22,7 +23,7 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 class JitsiMeetPluginActivity : JitsiMeetActivity() {
     companion object {
         @JvmStatic
-        fun launchActivity(context: Context?,
+        fun launchActivity(context: Activity?,
                            options: JitsiMeetConferenceOptions) {
             var intent = Intent(context, JitsiMeetPluginActivity::class.java).apply {
                 action = "org.jitsi.meet.CONFERENCE"

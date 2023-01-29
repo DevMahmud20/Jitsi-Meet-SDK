@@ -162,7 +162,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
         // Build options object for joining the conference. The SDK will merge the default
         // one we set earlier and this one when joining.
-        JitsiMeetPluginActivity.launchActivity(flutterPluginBinding.applicationContext, options)
+        JitsiMeetPluginActivity.launchActivity(activity, options)
         //PluginActivity.getInstance().launchActivity(activity, options2);
         //JitsiMeetActivity.launch(activity, "https://meet.jit.si")
         //JitsiMeetActivity.launch(activity, options2)
