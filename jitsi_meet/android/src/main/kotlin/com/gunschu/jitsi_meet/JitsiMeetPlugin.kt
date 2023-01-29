@@ -42,7 +42,11 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
      * FlutterPlugin interface implementations
      */
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        this.flutterPluginBinding = flutterPluginBinding;
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, JITSI_METHOD_CHANNEL)
+        channel.setMethodCallHandler(this)
+
+        eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, JITSI_EVENT_CHANNEL)
+        eventChannel.setStreamHandler(JitsiMeetEventStreamHandler.instance)
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
@@ -186,12 +190,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         this.activity = binding.activity
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, JITSI_METHOD_CHANNEL)
-        channel.setMethodCallHandler(this)
-
-        eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, JITSI_EVENT_CHANNEL)
-        eventChannel.setStreamHandler(JitsiMeetEventStreamHandler.instance)
-    }
+          }
 
     override fun onDetachedFromActivityForConfigChanges() {
         onDetachedFromActivity()
